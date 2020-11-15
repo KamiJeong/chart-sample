@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample</title>
+    <link rel="stylesheet" href="./lib/c3/c3.min.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .c3-chart {
+            display: inline-block;
+            width: 45%;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="c3-chart">
+        <h3>요일 별 페이지 뷰</h3>
+        <div id="dailyPageViewChart"></div>
+    </div>
+    <div class="c3-chart">
+        <h3>Top5 로그인 걔정</h3>
+        <div id="top5Login"></div>
+    </div>
+    <div class="c3-chart">
+        <h3>시간대별 사용흐름</h3>
+        <div id="usageTimeline"></div>
+    </div>
+    <div class="c3-chart">
+        <h3>사용 기기/브라우저</h3>
+        <div id="usagePlatform"></div>
+    </div>
+<script src="./lib/jquery/jquery-3.5.1.min.js"></script>
+<script src="./lib/d3/d3.min.js"></script>
+<script src="./lib/c3/c3.min.js"></script>
+<script>
+  $(document).ready(function () {
+    console.log('Hello');
+
+    // 요일 별 페이지 뷰
+    var dailyPageViewChart = c3.generate({
+      bindto: '#dailyPageViewChart',
+      data: {
+        x: 'x',
+        columns: [
+          ['x', '월', '화', '수', '목', '금', '토', '일'],
+          ['UV', 30, 200, 100, 400, 150, 250],
+          ['PV', 130, 100, 140, 200, 150, 50]
+        ],
+        type: 'bar'
+      },
+      colors: {
+        'UV': '#ff7f0e',
+        'PV': '#1f77b4'
+      },
+      axis: {
+        rotated: true,
+        x: {
+          type: 'category' // this needed to load string x value
+        },
+        y: {
+          show: false,
+        }
+      },
+      bar: {
+        width: {
+          ratio: 0.5 // this makes bar width 50% of length between ticks
+        }
+      }
+    });
+
+    // Top5 로그인 계정
+    var top5Login = c3.generate({
+      bindto: '#top5Login',
+      data: {
+        x: 'x',
+        columns: [
+          ['x', '이순신', '장영실', '고길동', '신사임당', '이유'],
+          ['로그인횟수', 500, 450, 250, 150, 100]
+        ],
+        type: 'bar',
+        labels: true
+      },
+      bar: {
+        width: 10
+      },
+      axis: {
+        rotated: true,
+        x: {
+          type: 'category' // this needed to load string x value
+        },
+        y: {
+          show: false,
+        }
+      },
+      legend: {
+        show: false
+      }
+    })
+
+    // 시간대별 사용흐름
+    var usageTimeline = c3.generate({
+      bindto: '#usageTimeline',
+      data: {
+        x: 'x',
+        columns: [
+          ['x', '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00','11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+          ['로그인수', 30, 200, 100, 400, 150, 250, 30, 200, 100, 400, 150, 250 , 30, 200, 100, 400, 150, 250, 30, 200, 100, 400, 150, 250],
+          ['클릭수', 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50]
+        ],
+        type: 'bar'
+      },
+      axis: {
+        x: {
+          type: 'category' // this needed to load string x value
+        },
+        y: {
+          show: false,
+        }
+      },
+      bar: {
+        width: {
+          ratio: 0.5 // this makes bar width 50% of length between ticks
+        }
+      },
+      legend: {
+        position: 'right'
+      }
+    })
+
+    // 사용 기기/브라우저
+    var usagePlatform = c3.generate({
+      bindto: '#usagePlatform',
+      data: {
+        columns: [
+          ['Chrome', 38],
+          ['Android', 35],
+          ['IE', 15],
+          ['IOS', 6.2],
+          ['etc', 5.8],
+        ],
+        type: 'donut'
+      },
+      label: {
+        threshold: 0.1
+      },
+      legend: {
+        position: 'right'
+      }
+    });
+
+    // Start demo
+    setInterval(function() {
+      dailyPageViewChart.load({
+        columns: [
+          ['x', '월', '화', '수', '목', '금', '토', '일'],
+          ['UV', parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50)],
+          ['PV', parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50)]
+        ]
+      });
+      top5Login.load({
+        columns: [
+          ['x', '이순신', '장영실', '고길동', '신사임당', '이유'],
+          ['로그인횟수', parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50), parseInt(Math.random() * 50)]
+        ]
+      });
+      usageTimeline.load({
+        columns: [
+          ['x', '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00','11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+          ['로그인수', 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50, 130, 100, 140, 200, 150, 50],
+          ['클릭수', 30, 200, 100, 400, 150, 250, 30, 200, 100, 400, 150, 250 , 30, 200, 100, 400, 150, 250, 30, 200, 100, 400, 150, 250]
+        ]
+      });
+      usagePlatform.load({
+        columns: [
+          ['Chrome', parseInt(Math.random() * 50)],
+          ['Android', parseInt(Math.random() * 50)],
+          ['IE', parseInt(Math.random() * 50)],
+          ['IOS', parseInt(Math.random() * 50)],
+          ['etc', parseInt(Math.random() * 50)],
+        ]
+      });
+    }, 2000);
+  });
+</script>
+</body>
+</html>
